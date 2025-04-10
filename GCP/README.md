@@ -1,9 +1,9 @@
 # Description
 
 For this part, i'll show the configuration on the gcp:
-- 1. Terraform
-- 2. Installations(docker,anaconda)
-- 3. Kafka
+- 1.Terraform
+- 2.Installations(docker,anaconda)
+- 3.Kafka
 
 ### 1. Terraform
 
