@@ -9,7 +9,7 @@ terraform {
 
 provider "aws" {
   # Configuration options
-  region                   = var.aws_region
+  region                   = "eu-west-3"
   shared_credentials_files = ["C:/Users/xin/.aws/credentials/aws.ini"]
   profile                  = "default"
 }
