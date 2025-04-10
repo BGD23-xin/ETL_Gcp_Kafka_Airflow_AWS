@@ -1,0 +1,29 @@
+#ignore files of keys
+Airflow/dags/keys
+Airflow/dags/__pycache__
+Airflow/logs
+
+#ignore files of terraform
+
+GCP/Terraform/.terraform
+
+GCP/Terraform/.terraform.tfstate
+
+AWS/terraform/.terraform
+AWS/terraform/.terraform.tfstate
+
+
+#ignore other files
+
+AWS/sql.ipynb
+Airflow/dags/connexion.py
+Airflow/dags/test_connexion.py
+
+
+backup
+
+backup_producer_data.py
+download_data_from_kafka.py
+test.ipynb
+test.py
+test.txt

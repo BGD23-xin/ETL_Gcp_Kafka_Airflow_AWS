@@ -1,0 +1,172 @@
+version: '3.8'
+
+services:
+  kafka1:
+    image: bitnami/kafka:3.7.0
+    container_name: kafka1
+    hostname: kafka1
+    restart: always
+    ports:
+      - "19092:9092"
+      - "19093:9093"
+      - "19094:9094"
+      - "19095:9095"
+    volumes:
+      - kafka1-data:/bitnami/kafka
+    environment:
+      # ✅ 基础设置
+      - TZ=Europe/Paris              # ⭕️ 可选：设置时区
+      - BITNAMI_DEBUG=true           # ⭕️ 可选：调试日志
+
+      # ✅ KRaft 模式配置
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_KRAFT_CLUSTER_ID=cluster_kafka
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@10.128.0.5:19093,2@10.128.0.5:29093,3@10.128.0.5:39093
+#10.188.180.195这里为你自己的服务器IP地址，注意替换
+      # ✅ 监听器配置
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9094,CLIENT://:9095,CONTROLLER://:9093,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://10.128.0.5:19094,CLIENT://10.128.0.5:19095,EXTERNAL://34.71.180.199:19092
+
+      # ✅ 安全认证
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:SASL_PLAINTEXT,CLIENT:SASL_PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL=PLAIN
+      - KAFKA_CFG_SASL_ENABLED_MECHANISMS=PLAIN
+
+      # ✅ 用户认证
+      - KAFKA_CLIENT_USERS=vpn
+      - KAFKA_CLIENT_PASSWORDS=BCfoV77N
+      - KAFKA_INTER_BROKER_USER=vpn
+      - KAFKA_INTER_BROKER_PASSWORD=BCfoV77N
+
+      # ⭕️ 可选参数
+      - KAFKA_CFG_NUM_PARTITIONS=1
+      - KAFKA_HEAP_OPTS=-Xms512M -Xmx2G
+      - KAFKA_CFG_BROKER_RACK=az-a
+      - KAFKA_CFG_DELETE_TOPIC_ENABLE=true # 删除主题
+
+    networks:
+      - kafka-net
+
+  kafka2:
+    image: bitnami/kafka:3.7.0
+    container_name: kafka2
+    hostname: kafka2
+    restart: always
+    ports:
+      - "29092:9092"
+      - "29093:9093"
+      - "29094:9094"
+      - "29095:9095"
+    volumes:
+      - kafka2-data:/bitnami/kafka
+    environment:
+      - TZ=Europe/Paris
+      - BITNAMI_DEBUG=true
+      - ALLOW_PLAINTEXT_LISTENER=no
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_NODE_ID=2
+      - KAFKA_KRAFT_CLUSTER_ID=cluster_kafka
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@10.128.0.5:19093,2@10.128.0.5:29093,3@10.128.0.5:39093
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9094,CLIENT://:9095,CONTROLLER://:9093,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://10.128.0.5:29094,CLIENT://10.128.0.5:29095,EXTERNAL://34.71.180.199:29092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:SASL_PLAINTEXT,CLIENT:SASL_PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL=PLAIN
+      - KAFKA_CFG_SASL_ENABLED_MECHANISMS=PLAIN
+      - KAFKA_CLIENT_USERS=vpn
+      - KAFKA_CLIENT_PASSWORDS=BCfoV77N
+      - KAFKA_INTER_BROKER_USER=vpn
+      - KAFKA_INTER_BROKER_PASSWORD=BCfoV77N
+      - KAFKA_CFG_NUM_PARTITIONS=1
+      - KAFKA_HEAP_OPTS=-Xms512M -Xmx2G
+      - KAFKA_CFG_BROKER_RACK=az-b
+      - KAFKA_CFG_DELETE_TOPIC_ENABLE=true
+    networks:
+      - kafka-net
+  kafka3:
+    image: bitnami/kafka:3.7.0
+    container_name: kafka3
+    hostname: kafka3
+    restart: always
+    ports:
+      - "39092:9092"
+      - "39093:9093"
+      - "39094:9094"
+      - "39095:9095"
+    volumes:
+      - kafka3-data:/bitnami/kafka
+    environment:
+      # ✅ 基础设置
+      - TZ=Europe/Paris              # ⭕️ 可选：设置时区
+      - BITNAMI_DEBUG=true           # ⭕️ 可选：调试日志
+
+      # ✅ KRaft 模式配置
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_NODE_ID=3
+      - KAFKA_KRAFT_CLUSTER_ID=cluster_kafka
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@10.128.0.5:19093,2@10.128.0.5:29093,3@10.128.0.5:39093
+#10.188.180.195这里为你自己的服务器IP地址，注意替换
+      # ✅ 监听器配置
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9094,CLIENT://:9095,CONTROLLER://:9093,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://10.128.0.5:39094,CLIENT://10.128.0.5:39095,EXTERNAL://34.71.180.199:39092
+
+      # ✅ 安全认证
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:SASL_PLAINTEXT,CLIENT:SASL_PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL=PLAIN
+      - KAFKA_CFG_SASL_ENABLED_MECHANISMS=PLAIN
+
+      # ✅ 用户认证
+      - KAFKA_CLIENT_USERS=vpn
+      - KAFKA_CLIENT_PASSWORDS=BCfoV77N
+      - KAFKA_INTER_BROKER_USER=vpn
+      - KAFKA_INTER_BROKER_PASSWORD=BCfoV77N
+
+      # ⭕️ 可选参数
+      - KAFKA_CFG_NUM_PARTITIONS=1
+      - KAFKA_HEAP_OPTS=-Xms512M -Xmx2G
+      - KAFKA_CFG_BROKER_RACK=az-c
+      - KAFKA_CFG_DELETE_TOPIC_ENABLE=true
+    networks:
+      - kafka-net
+  kafka-ui:
+    image: provectuslabs/kafka-ui:master
+    container_name: kafka-ui
+    restart: always
+    ports:
+      - "8081:8080"  # 本地访问 UI：http://localhost:8081
+    environment:
+      # ✅ Kafka 集群连接配置
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=10.128.0.5:19095,10.128.0.5:29095,10.128.0.5:39095
+
+      # ✅ Kafka 安全认证配置
+      - KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL=SASL_PLAINTEXT
+      - KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM=PLAIN
+      - KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule required username="vpn" password="BCfoV77N";
+
+      # ✅ Kafka UI 登录认证
+      - DYNAMIC_CONFIG_ENABLED=true
+      - AUTH_TYPE=LOGIN_FORM
+      - SPRING_SECURITY_USER_NAME=kafka
+      - SPRING_SECURITY_USER_PASSWORD=xin
+
+      - TZ=Europe/Paris
+
+    networks:
+      - kafka-net
+
+networks:
+  kafka-net:
+    driver: bridge
+
+volumes:
+  kafka1-data:
+  kafka2-data:
+  kafka3-data:
+

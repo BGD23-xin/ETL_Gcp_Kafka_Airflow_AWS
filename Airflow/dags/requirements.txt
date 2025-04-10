@@ -1,0 +1,9 @@
+google-cloud-bigquery
+
+kafka-python
+
+db-dtypes
+
+tqdm
+
+boto3
