@@ -13,6 +13,6 @@ The technologies will be used:
 - Airflow
 - Bigquery
 - GCP Compute Engine
-- kafka
+- Kafka
 - AWS S3
 - AWS Athena

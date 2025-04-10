@@ -18,7 +18,7 @@ AWS/terraform/.terraform.tfstate
 AWS/sql.ipynb
 Airflow/dags/connexion.py
 Airflow/dags/test_connexion.py
-
+GCP/installations/docker-compose_chinese_version.yml
 
 backup
 
